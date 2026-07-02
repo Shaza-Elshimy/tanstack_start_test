@@ -1,8 +1,41 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/student/dashboard')({
-  component: StudentDashboard,
+  loader: async () => {
+    const res =await fetch ('https://dummyjson.com/users')
+
+    if(res.status !== 200) {
+      throw new Error('Failed to fetch users')
+    }
+    await new Promise((resolve) => setTimeout(resolve, 3000))
+
+    const data = await res.json()
+    return data.users
+  },
+  pendingComponent: () => <div className="p-10 text-center text-2xl font-bold">Loading users...</div>
+
+  ,component: StudentDashboard,
 })
 function StudentDashboard() {
-  return <div>Hello "/student/dashboard"!</div>
+  const users = Route.useLoaderData()
+  return <div className="p-10 text-center text-2xl font-bold">
+      <h1 className="mb-6 text-3xl font-bold">Users</h1>
+
+      <div className="grid gap-4">
+        {users.map((user: any) => (
+          <div
+            key={user.id}
+            className="rounded-lg border p-4 shadow"
+          >
+            <h2 className="text-lg font-semibold">
+              {user.firstName} {user.lastName}
+            </h2>
+
+            <p>{user.email}</p>
+            <p>{user.company.name}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
 }
