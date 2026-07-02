@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/student/dashboard')({
   loader: async () => {
-    const res =await fetch ('https://dummyjson.com/users')
+    const res =await fetch ('https://dummyjson.com/invalid')
 
     if(res.status !== 200) {
       throw new Error('Failed to fetch users')
@@ -13,6 +13,17 @@ export const Route = createFileRoute('/student/dashboard')({
     return data.users
   },
   pendingComponent: () => <div className="p-10 text-center text-2xl font-bold">Loading users...</div>
+  ,
+  errorComponent: ({ error }) => 
+      <div className="flex min-h-[300px] flex-col items-center justify-center text-center">
+        <h1 className="text-3xl font-bold text-red-600">
+          Something went wrong 💥
+        </h1>
+
+        <p className="mt-2 text-gray-600">
+          {error.message}
+        </p>
+      </div>
 
   ,component: StudentDashboard,
 })
