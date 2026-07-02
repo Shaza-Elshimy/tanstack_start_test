@@ -1,6 +1,14 @@
-import { createFileRoute, Outlet, Link } from '@tanstack/react-router'
+import { createFileRoute, Outlet, Link, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/student')({
+  beforeLoad:({context})=>{
+    if(!context.user.isLoggedIn){
+      throw redirect({to:'/login'})
+    }
+    if(context.user.role !== 'Student'){
+      throw redirect({to:'/unauthorized'})
+    }
+  },
   component: StudentLayout,
 })
 
