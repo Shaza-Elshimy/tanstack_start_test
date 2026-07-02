@@ -1,10 +1,20 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import appCss from '../styles.css?url'
 
-export const Route = createRootRoute({
+export type User = {
+    name: string
+    role:'Student' | 'Admin'
+    isLoggedIn:boolean
+  
+}
+export type RouterContext = {
+  user: User
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
       {

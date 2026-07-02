@@ -5,6 +5,7 @@ export const Route = createFileRoute('/student')({
 })
 
 function StudentLayout() {
+  const { user } = Route.useRouteContext()
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
@@ -12,6 +13,12 @@ function StudentLayout() {
         <h2 className="text-xl font-bold text-blue-600">
           Student Panel 🎓
         </h2>
+        <p className="text-gray-600">
+          Welcome, {user.name}!
+        </p>
+        <span className="text-gray-600">
+          Role: {user.role}
+        </span>
 
         <div className="flex gap-6 text-sm font-medium">
           <Link

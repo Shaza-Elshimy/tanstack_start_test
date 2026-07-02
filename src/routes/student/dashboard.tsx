@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/student/dashboard')({
   loader: async () => {
-    const res =await fetch ('https://dummyjson.com/invalid')
+    const res =await fetch ('https://dummyjson.com/users')
 
     if(res.status !== 200) {
       throw new Error('Failed to fetch users')
