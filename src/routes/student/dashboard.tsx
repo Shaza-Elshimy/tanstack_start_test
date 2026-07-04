@@ -1,17 +1,31 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+
+export const getUsers = createServerFn({
+  method: 'GET',
+}).handler( async () => {
+    const res = await fetch('https://dummyjson.com/users')
+    const data = await res.json()
+    return data.users
+
+})
 
 export const Route = createFileRoute('/student/dashboard')({
   loader: async () => {
-    const res =await fetch ('https://dummyjson.com/users')
-
-    if(res.status !== 200) {
-      throw new Error('Failed to fetch users')
-    }
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-
-    const data = await res.json()
-    return data.users
+    return await getUsers()
   },
+  // loader: async () => {
+  //   const res =await fetch ('https://dummyjson.com/users')
+
+  //   if(res.status !== 200) {
+  //     throw new Error('Failed to fetch users')
+  //   }
+  //   await new Promise((resolve) => setTimeout(resolve, 3000))
+
+  //   const data = await res.json()
+  //   return data.users
+  // },
+
   pendingComponent: () => <div className="p-10 text-center text-2xl font-bold">Loading users...</div>
   ,
   errorComponent: ({ error }) => 
